@@ -7,37 +7,31 @@
 
 import SwiftUI
 
+enum Tab {
+    case login
+    case movies
+}
+
 struct ContentView: View {
-    @State private var firstName = ""
-    @State private var lastName = ""
-    @State private var password = ""
-    @State private var birthYear: Double = 1900
-    @State private var birthDay = 1.0
-    @State private var birthMonth = "January"
-    @State private var selectedGender = 0
-    @State private var isToggle : Bool = false
-
-
-    
-    
+    @State var selection: Tab = .login
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-    
 
-    
     
     var body: some View {
         
-        TabView {
-            LoginView()
+        TabView(selection: $selection) {
+            LoginView(tab: $selection)
                 .tabItem {
                     Text("Login")
                     Image(systemName: "gear")
                 }
+                .tag(Tab.login)
             CollectionView()
                 .tabItem {
                     Text("Movies")
                     Image(systemName: "house")
                 }
+                .tag(Tab.movies)
             
             
         }
@@ -47,6 +41,8 @@ struct ContentView: View {
 }
 
 struct LoginView: View {
+    @Binding var tab: Tab
+
     @State private var firstName = ""
     @State private var lastName = ""
     @State private var password = ""
@@ -124,7 +120,8 @@ struct LoginView: View {
                     }.padding(5)
         
                     Button {
-                        //GO TO NEXT SCREEN
+                        self.tab = .movies
+                        print("TAPPED")
                     } label: {
                         Text("SIGN UP")
                     }
